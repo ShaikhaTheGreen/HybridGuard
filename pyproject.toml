@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hybridguard"
+version = "0.2.0"
+description = "Canonicalization-aware, contrastive, adversarially trained prompt-injection detection for LLM pipelines."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+# Author details intentionally omitted while the accompanying manuscript is under peer review.
+# Will be restored once the manuscript is accepted for publication.
+authors = [
+  { name = "HybridGuard contributors" },
+]
+keywords = [
+  "prompt injection",
+  "jailbreak detection",
+  "canonicalization",
+  "unicode confusables",
+  "homoglyph",
+  "llm security",
+  "multilingual safety",
+  "supervised contrastive learning",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Security",
+]
+
+# Minimal install: canonicalization module and CLI only.
+# The training / evaluation pipeline requires the `full` extras below.
+dependencies = [
+  "regex>=2023.0",
+]
+
+[project.optional-dependencies]
+# Full reproducibility stack: everything needed to retrain and evaluate
+# HybridGuard from scratch on the paper's datasets.
+full = [
+  "numpy>=1.26",
+  "pandas>=2.0",
+  "scipy>=1.11",
+  "scikit-learn>=1.3",
+  "torch>=2.1",
+  "transformers>=4.41",
+  "sentence-transformers>=2.7",
+  "datasets>=2.20",
+  "faiss-cpu>=1.9",
+  "optuna>=3.6",
+  "xxhash",
+  "langdetect",
+  "joblib",
+  "sacremoses",
+  "sentencepiece",
+  "pyyaml",
+]
+dev = [
+  "pytest>=7",
+  "pytest-cov",
+  "ruff",
+  "mypy",
+  "nbformat",
+]
+
+[project.scripts]
+hybridguard = "hybridguard.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/ShaikhaTheGreen/HybridGuard"
+Repository = "https://github.com/ShaikhaTheGreen/HybridGuard"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

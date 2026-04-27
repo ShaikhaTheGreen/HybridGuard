@@ -1,0 +1,14 @@
+# HybridGuard Dashboard – Python dependencies
+# Install with:  pip install -r requirements.txt
+
+dash>=2.17.0
+dash-bootstrap-components>=1.6.0
+plotly>=5.22.0
+pandas>=2.0.0
+numpy>=1.26.0
+matplotlib>=3.8.0
+
+# Used by Plotly to export figures to PDF / PNG / SVG.
+# If kaleido fails to install (e.g. on bleeding-edge Python with no wheel),
+# the dashboard still runs — figure-download buttons just become disabled.
+kaleido>=0.2.1

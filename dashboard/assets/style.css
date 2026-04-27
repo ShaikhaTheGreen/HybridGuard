@@ -1,0 +1,126 @@
+/* HybridGuard Dashboard – global styles */
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: #0f1117;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.banner {
+    background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 100%);
+    border-bottom: 1px solid #2e3a4e;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.82rem;
+    color: #8ab4f8;
+    letter-spacing: 0.02em;
+}
+
+.header-block {
+    background: linear-gradient(90deg, #1e3a5f 0%, #0d2137 100%);
+    padding: 1.6rem 2rem 1.2rem;
+    border-bottom: 2px solid #2e6da4;
+}
+
+.header-block h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #7ecfff;
+}
+
+.header-block p {
+    margin: 0;
+    color: #9ab8d8;
+    font-size: 0.9rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #7ecfff;
+    border-left: 4px solid #2e6da4;
+    padding-left: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.card {
+    background: #16202d;
+    border: 1px solid #2a3a4e;
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+}
+
+.kpi-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.kpi-box {
+    flex: 1;
+    min-width: 140px;
+    background: #1a2840;
+    border: 1px solid #2e4a6e;
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+}
+
+.kpi-box .kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4fc3f7;
+}
+
+.kpi-box .kpi-label {
+    font-size: 0.75rem;
+    color: #7a9abf;
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.issue-block {
+    background: #1f1a2e;
+    border-left: 4px solid #e57373;
+    border-radius: 0 6px 6px 0;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.87rem;
+}
+
+.issue-block .issue-title {
+    font-weight: 600;
+    color: #ef9a9a;
+    margin-bottom: 0.3rem;
+}
+
+.issue-block.warning {
+    border-left-color: #ffb74d;
+}
+
+.issue-block.warning .issue-title {
+    color: #ffcc80;
+}
+
+.issue-block.info {
+    border-left-color: #4dd0e1;
+}
+
+.issue-block.info .issue-title {
+    color: #80deea;
+}
+
+.tabs-custom .tab {
+    color: #9ab8d8 !important;
+    background: #16202d !important;
+    border-color: #2a3a4e !important;
+}
+
+.tabs-custom .tab--selected {
+    color: #4fc3f7 !important;
+    border-bottom: 2px solid #4fc3f7 !important;
+    background: #1a2840 !important;
+}

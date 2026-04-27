@@ -1,0 +1,9 @@
+# Pin to gradio 5.x — newer than the 4.44 we declared in README's sdk_version,
+# but compatible with current huggingface_hub (HfFolder was removed in hub 1.0).
+gradio>=5.0.0,<6.0.0
+
+# Hub pin as belt-and-suspenders in case any transitive dep drags an older gradio
+huggingface_hub>=0.24.0,<1.0.0
+
+# Install hybridguard directly from the GitHub repo (until PyPI release)
+hybridguard @ git+https://github.com/ShaikhaTheGreen/HybridGuard.git

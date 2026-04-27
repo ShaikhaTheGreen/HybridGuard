@@ -1,0 +1,89 @@
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large binary artifacts (archive/ is local-only by convention)
+archive/
+*.zip
+*.mp4
+*.joblib
+*.pt
+*.bin
+results/**/hybridguard_models/
+results/**/EXPORT.zip
+results/**/datasets/
+
+# LaTeX build junk (keep .tex and .bib, ignore rendered intermediates)
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.run.xml
+*.pdf.patched
+*.tex.patched
+*.bib.patched
+
+# Colab / drive mounts (shouldn't appear but belt + braces)
+content/
+drive/
+
+# Manuscript and submission package — do not commit until publication
+paper/main.tex
+paper/main.pdf
+paper/submission/
+HybridGuard_Pre_Submission_Re_Assessment.docx
+SUBMISSION_PLAN_20260425.md
+SUBMISSION_AUDIT_*.md
+
+# Revision-round planning doc — internal team use
+docs/REVISION_QUEUE.md
+
+# Internal — keep local until manuscript acceptance
+docs/
+paper/figures/
+paper/HybridGuard_overleaf_FINAL/
+HybridGuard_RevisionAddons_*/
+
+# Internal — keep local until manuscript acceptance
+docs/
+paper/
+HybridGuard_Pre_Submission_Re_Assessment.docx
+HybridGuard_overleaf_FINAL/
+HybridGuard_RevisionAddons_*/
+
+# Internal — keep local until manuscript acceptance
+docs/
+paper/
+HybridGuard_Pre_Submission_Re_Assessment.docx
+HybridGuard_overleaf_FINAL/
+HybridGuard_RevisionAddons_*/
+
+# Internal — keep local until manuscript acceptance
+docs/
+paper/
+HybridGuard_Pre_Submission_Re_Assessment.docx
+HybridGuard_overleaf_FINAL/
+HybridGuard_RevisionAddons_*/
+
+# Internal — keep local until manuscript acceptance
+docs/
+paper/
+HybridGuard_Pre_Submission_Re_Assessment.docx
+HybridGuard_overleaf_FINAL/
+HybridGuard_RevisionAddons_*/
