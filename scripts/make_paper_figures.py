@@ -34,8 +34,11 @@ SCRIPTS = REPO_ROOT / "scripts"
 FIGURES = [
     ("make_ws1_universal_figure.py", "Fig 1 — WS1 universal recovery"),
     ("make_llm_judge_figure.py",     "Fig 2 — cost-quality Pareto frontier (LLM-as-judge)"),
-    # ("make_robustness_figure.py",     "Fig 3 — robustness with vs without canonicalization"),
-    # ("make_calibration_figure.py",    "Fig 4 — calibration reliability diagrams"),
+    # CANOPI (NPL) figures — read paper/paper_v2_extract/canopi/ (from runs/<run_id>/).
+    # Each skips gracefully if its CSV is absent, so this is safe to run before a run.
+    ("make_canopi_multilingual_figure.py", "F9  — multilingual headline (E3)"),
+    ("make_canopi_results_figure.py",      "F8/F10/F11/F13/F14/F15/F18 — CANOPI results"),
+    ("make_canopi_schematics_figure.py",   "F1/F2/F3/F4/F6/F19 — schematics"),
 ]
 
 

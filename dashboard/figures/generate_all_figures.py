@@ -36,6 +36,19 @@ if __name__ == "__main__":
             run_script(s)
         except Exception as exc:
             print(f"  ✗ Failed: {exc}")
+
+    # CANOPI (NPL) paper figures live under scripts/ and read runs/<run_id>/.
+    # Refresh them too; each generator skips gracefully if its CSV is absent.
+    import subprocess
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    paper_figs = repo_root / "scripts" / "make_paper_figures.py"
+    if paper_figs.exists():
+        print("\n▶ CANOPI paper figures (scripts/make_paper_figures.py)")
+        try:
+            subprocess.run([sys.executable, str(paper_figs)], cwd=str(repo_root))
+        except Exception as exc:
+            print(f"  ✗ Failed: {exc}")
+
     print("\n" + "="*55)
     print("  All figures written to:  figures/")
     print("="*55 + "\n")
