@@ -1,0 +1,105 @@
+% ============================================================
+% Related Work — NPL resubmission. Concedes prior canonicalization work
+% up front, then stakes the delta. \cite keys are in references_npl.bib.
+% ============================================================
+\section{Related Work}\label{sec:related}
+
+\subsection{Prompt injection and neural guardrails}
+Prompt injection is the top-ranked vulnerability for LLM applications
+(OWASP LLM01)~\cite{owasp2025}, spanning direct injection in user input and
+indirect injection smuggled through retrieved context or tool output.
+A now-standard mitigation is a \emph{neural guardrail}: a transformer classifier
+trained to flag injection or jailbreak content before it reaches the model.
+Representative open detectors include ProtectAI's DeBERTa-based
+classifier~\cite{protectai2024}, InjecGuard~\cite{injecguard2024}, and
+PromptGuard~\cite{promptguard2025}; Meta's Prompt Guard~2 reports $97.5\%$ recall
+at a $1\%$-FPR operating point in-distribution~\cite{metapromptguard2}, the bar our
+method must match. These detectors are typically evaluated by
+aggregate ranking metrics (AUROC) on clean, English, in-distribution test sets,
+which---as we show in Section~\ref{sec:results}---obscures their behavior under
+both adversarial obfuscation and the low-false-positive operating points that
+deployments require.
+
+\subsection{Character-level obfuscation attacks}
+A growing body of red-team work shows that trivial, meaning-preserving character
+perturbations evade production guardrails. Homoglyph substitution (e.g., Cyrillic
+\foreignlanguage{russian}{а} U+0430 for Latin \texttt{a}) reaches attack-success
+rates of 42--59\% against open models~\cite{elastic2025homoglyph}; invisible
+zero-width and Unicode-tag characters, and emoji variation-selector smuggling,
+fully bypass several commercial shields including ProtectAI~v2 and Azure Prompt
+Shield~\cite{mindgard2025invisible,csa2026unicode}. Crucially, the LLM tokenizer
+typically reconstructs the intended semantics, so the attack changes the
+classifier's input distribution without changing meaning---a covariate shift we
+formalize in Section~\ref{sec:method}.
+
+\subsection{Canonicalization as a defense---and our delta}
+Input normalization is \emph{not} a new defensive idea, and we state this plainly.
+NFKC normalization, zero-width stripping, and confusable folding as a
+prompt-injection mitigation appear in recent work~\cite{llmsec2025bypass}, in
+open-source tooling~\cite{cleanrepo}, and in a granted patent on Unicode
+canonicalization of prompt injections~\cite{patent2025canon}; a
+normalization-aware shield lowers average homoglyph exposure from 94.1\% to
+43.9\%~\cite{llmsec2025bypass}. Related input-transformation defenses---spotlighting
+and datamarking of untrusted spans~\cite{hines2024spotlighting} and
+paraphrase/retokenization~\cite{jain2023baseline}---likewise operate at the
+orthographic or structural level and address neither semantic nor cross-lingual
+paraphrase. Our contribution is therefore \emph{not} the idea
+of canonicalizing input. It is fourfold: \textbf{(i)} a \emph{detector-agnostic}
+evaluation that quantifies recall recovery at a fixed 1\%-FPR operating point
+across structurally different detectors, surfacing an under-reported
+\emph{over-trigger counter-case} (a detector whose recall \emph{rises} under
+obfuscation, so canonicalization normalizes rather than restores it);
+\textbf{(ii)} an \emph{adaptive-adversary} evaluation that locates where
+canonicalization is evaded (out-of-map confusables, tag-character smuggling) and
+shows a hardened canonicalizer closing those gaps, answering the
+``attacker-moves-second'' critique~\cite{attackersecond2025}; \textbf{(iii)} a
+unification of \emph{character} and \emph{linguistic} canonicalization, extending
+the same pre-classifier to cross-lingual and romanized-Arabic injection; and
+\textbf{(iv)} a principled \emph{taxonomy}---canonicalization provably neutralizes
+information-preserving perturbations and provably cannot neutralize semantic ones.
+
+\subsection{Adaptive robustness}
+Static defenses are routinely broken by adversaries who adapt to
+them~\cite{attackersecond2025}. Most canonicalization studies report only static
+attacks. We therefore evaluate against an adversary aware of the canonicalization
+stage and report the defense's \emph{envelope} rather than a single headline.
+
+\subsection{Multilingual and romanized injection}
+Safety alignment is English-dominant, so translated prompts---not only in
+low-resource languages---evade guardrails far more
+often~\cite{yong2023lowresource,deng2024multilingual,babel2025}. The remedies
+proposed so far are \emph{model-side}: multilingual safety
+fine-tuning~\cite{deng2024multilingual} or LLM-based reasoning
+guardrails~\cite{mrguard2025,sealguard2025} that place a generative model in the
+inference path. To our knowledge no lightweight, no-LLM \emph{detector} recovers
+cross-lingual detection at a fixed low-FPR operating point---the gap CANOPI closes
+(Section~\ref{sec:results}). Romanized Arabic (Latin-script Arabic)
+and Arabic transliteration are documented \emph{jailbreak vectors}~\cite{arabizi2024};
+romanized-to-Arabic transliteration is itself an established NLP
+task~\cite{wanlp2020arabizi}. To our knowledge the \emph{defensive} use of
+transliteration-plus-translation as a canonicalization stage against
+romanized/code-switched injection is unexplored, and is a contribution unique to
+this work.
+
+\subsection{Learned representations and operating-point objectives}
+Closest to our learned component are detectors that train a representation to
+separate benign from malicious inputs. Supervised contrastive
+learning~\cite{khosla2020supcon} underpins recent jailbreak detectors; the most
+similar, concurrent work fits a lightweight contrastive projection over a frozen
+backbone~\cite{rcs2025}, but in the vision--language setting, with neither a
+cross-lingual component nor an explicit low-false-positive objective. Such methods
+optimize \emph{average} separation (AUROC) and reach a strict operating point, if
+at all, only by \emph{post-hoc} threshold calibration. Optimizing the low-FPR
+region \emph{directly}---partial-AUC and ``accuracy-at-the-top''
+surrogates~\cite{macha2020deeptoppush,zhu2022pauc}---is well studied in
+classification but, to our knowledge, has never been applied to prompt-injection
+or jailbreak detection. CANOPI couples this operating-point objective to a
+multi-view, cross-lingual intent-invariance term on top of the frozen orthographic
+canonicalizer, training only a projection head with \emph{no} generative model in
+the inference path---unlike LLM-based guardrails~\cite{mrguard2025} or
+LLM-as-judge pipelines. The resulting property is one none of the above provides:
+recovery of cross-lingual recall \emph{at a fixed $1\%$-FPR threshold}. Following
+the adaptive-evaluation norm~\cite{carlini2019eval,attackersecond2025}, and
+consistent with broader guardrail evaluations~\cite{sok2025guardrails}, we report
+recall against an adaptive semantic-rewrite adversary rather than a single static
+number, and disclose the residual our canonicalization provably cannot remove.
