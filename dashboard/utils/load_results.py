@@ -162,6 +162,7 @@ class Results:
             repo_root = Path(__file__).parent.parent.parent  # /HybridGuard
             self._repo_root = repo_root
             search = [
+                repo_root / "runs",      # CANOPI (NPL) run_id dirs, orchestrator convention
                 repo_root / "results",
                 repo_root / "archive" / "colab_results_20260425" / "results",
                 repo_root.parent / "results",

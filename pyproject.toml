@@ -63,6 +63,9 @@ full = [
   "sacremoses",
   "sentencepiece",
   "pyyaml",
+  # CANOPI (NPL extension) additions:
+  "matplotlib>=3.7",   # paper figure generators (scripts/make_canopi_*_figure.py)
+  "umap-learn>=0.5",   # E6 embedding-geometry projection (F12)
 ]
 dev = [
   "pytest>=7",

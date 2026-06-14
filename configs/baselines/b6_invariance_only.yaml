@@ -1,0 +1,21 @@
+# B6 — invariance-ONLY (lam4_pauc = 0). MLJailDe-style average separation.
+# Tests whether invariance WITHOUT the operating-point term suffices. CANOPI > B6
+# is required (else the pAUC coupling is not the source of the gain).
+name: b6_invariance_only
+seeds: [42, 2025, 7, 1337, 314]
+split: {scheme: "60/20/20", seed: 1337, stratified: true}
+encoder:
+  backend: sentence-transformers
+  model_name: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+  canonicalize_first: true
+  cache: true
+model: {head_depth: 2, hidden: 256, out_dim: 128, dropout: 0.1, freeze_encoder: true}
+loss:  {lam1_inv: 1.0, lam2_hardneg: 0.5, lam3_drift: 0.5, lam4_pauc: 0.0, tau: 0.1, hardneg_margin: 0.2}
+augment:
+  families: [paraphrase, persona, "encoding:homoglyph", "encoding:base64"]
+  crosslingual: [ar, es]
+  nllb: facebook/nllb-200-distilled-600M
+  intent_filter: true
+  tau_keep: 0.5
+train: {epochs: 30, batch_size: 256, lr: 0.001, wd: 0.0001}
+eval:  {target_fpr: 0.01, bootstrap_resamples: 1000, bootstrap_seed: 1337}

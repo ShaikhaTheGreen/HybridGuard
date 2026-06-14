@@ -1,0 +1,38 @@
+# CANOPI — full joint objective (the proposed method). E1/E3/E4/E6/E7/E8/E10.
+# One YAML per experiment/ablation; baselines flip lambdas only (see baselines/).
+name: canopi_main
+seeds: [42, 2025, 7, 1337, 314]      # pre-registered; do not change
+split: {scheme: "60/20/20", seed: 1337, stratified: true}   # reuse orchestrator split
+
+encoder:
+  backend: sentence-transformers       # semantic E required for reported numbers
+  model_name: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+  canonicalize_first: true             # E always sees the L0 canonical form
+  cache: true
+
+model:
+  head_depth: 2                        # P depth in {1,2,3} (ablated in E2)
+  hidden: 256
+  out_dim: 128
+  dropout: 0.1
+  freeze_encoder: true                 # frozen E (finetune ablation flips this)
+
+loss:                                  # the JOINT objective; a term is OFF iff lambda==0
+  lam1_inv: 1.0                        # multi-view supervised contrastive (incl. AR/ES)
+  lam2_hardneg: 0.5                    # push attacks vs trigger-sharing benigns
+  lam3_drift: 0.5                      # invariance regularizer across transform families
+  lam4_pauc: 1.0                       # partial-AUC low-FPR top-push (operating-point hinge)
+  tau: 0.1
+  hardneg_margin: 0.2
+  beta: 0.01                           # FPR tail the pAUC term optimizes (= 1% FPR target)
+  pauc_margin: 1.0
+
+augment:                               # TRAINING-TIME views only
+  families: [paraphrase, persona, "encoding:homoglyph", "encoding:base64"]
+  crosslingual: [ar, es]               # NLLB-200 EN<->AR/ES back-translation positives
+  nllb: facebook/nllb-200-distilled-600M
+  intent_filter: true
+  tau_keep: 0.5                        # embedding-sim accept threshold (NLI optional)
+
+train: {epochs: 30, batch_size: 256, lr: 0.001, wd: 0.0001}
+eval:  {target_fpr: 0.01, bootstrap_resamples: 1000, bootstrap_seed: 1337}

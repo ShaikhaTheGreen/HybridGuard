@@ -73,7 +73,19 @@ def aggregate_mean_std(frames: Sequence[pd.DataFrame], key_cols: Sequence[str]) 
 
 
 class RunWriter:
+    """Write a run under <root>/<run_id>/.
+
+    NOTE: the dashboard loader (`dashboard/utils/load_results.py:_latest_run_dir`)
+    only discovers run directories whose name starts with ``run_``, and reads
+    ``tables/<name>.csv`` + ``run_metadata.json``. So pass run_ids like
+    ``run_canopi_main_20260614`` and name dashboard-facing tables to match the
+    loader (main_results, overdefense, ablation, fairness, robustness, ...).
+    """
+
     def __init__(self, run_id: str, root: str | Path = "runs"):
+        if not run_id.startswith("run_"):
+            # Keep dashboard discovery working without surprising the caller.
+            run_id = f"run_{run_id}"
         self.run_id = run_id
         self.dir = Path(root) / run_id
         (self.dir / "aggregated").mkdir(parents=True, exist_ok=True)
