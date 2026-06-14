@@ -120,6 +120,11 @@ CELLS = [
         "    print('multilingual sets:', {k: len(v[0]) for k,v in ml.items()})",
         "except Exception as e:",
         "    print('multilingual set unavailable (provide code/multilingual_injections.py):', e)",
+        "if not ml:",
+        "    print('='*64); print('  E3 (multilingual HEADLINE / F9) WILL BE SKIPPED'); ",
+        "    print('  -> code/multilingual_injections.py not importable on this runtime.'); print('='*64)",
+        "else:",
+        "    print('E3 ready:', sum(len(v[0]) for v in ml.values()), 'multilingual prompts across', list(ml))",
     ),
 
     md("## 5 · Baselines (B1, B5; B2/B3 if available). B8 from a prior HG run if loaded."),
