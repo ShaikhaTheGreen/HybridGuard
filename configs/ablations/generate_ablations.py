@@ -27,7 +27,7 @@ BASE = dict(
     freeze=True,
     lam=dict(inv=1.0, hardneg=0.5, drift=0.5, pauc=1.0),
     families='[paraphrase, persona, "encoding:homoglyph", "encoding:base64"]',
-    crosslingual="[ar, es]",
+    crosslingual="[ar, es, fr, de, zh, hi, ru, pt]",   # match canopi_main diverse-8 panel
 )
 
 # (name, description, mutation dict)
@@ -60,6 +60,7 @@ loss:  {{lam1_inv: {inv}, lam2_hardneg: {hardneg}, lam3_drift: {drift}, lam4_pau
 augment:
   families: {families}
   crosslingual: {crosslingual}
+  crosslingual_max: 300
   nllb: facebook/nllb-200-distilled-600M
   intent_filter: true
   tau_keep: 0.5

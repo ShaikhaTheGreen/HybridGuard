@@ -11,7 +11,8 @@ model: {head_depth: 3, hidden: 256, out_dim: 128, dropout: 0.1, freeze_encoder: 
 loss:  {lam1_inv: 1.0, lam2_hardneg: 0.5, lam3_drift: 0.5, lam4_pauc: 1.0, tau: 0.1, hardneg_margin: 0.2, beta: 0.01, pauc_margin: 1.0}
 augment:
   families: [paraphrase, persona, "encoding:homoglyph", "encoding:base64"]
-  crosslingual: [ar, es]
+  crosslingual: [ar, es, fr, de, zh, hi, ru, pt]
+  crosslingual_max: 300
   nllb: facebook/nllb-200-distilled-600M
   intent_filter: true
   tau_keep: 0.5
