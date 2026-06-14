@@ -105,6 +105,7 @@ def train_one_seed(cfg: dict, data: dict, seed: int) -> TrainResult:
         list(data["X_train"]), list(data["y_train"]), bank, filt,
         families=cfg.get("augment", {}).get("families", ("paraphrase", "persona", "encoding:homoglyph")),
         crosslingual=cfg.get("augment", {}).get("crosslingual", ()),
+        crosslingual_max=cfg.get("augment", {}).get("crosslingual_max", 300),
     )
 
     # 3. Precompute frozen embeddings for all view rows + anchors once.

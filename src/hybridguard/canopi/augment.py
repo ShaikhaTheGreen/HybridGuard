@@ -64,7 +64,14 @@ class View:
 class NLLBTranslator:
     """Lazy NLLB-200 wrapper for EN<->AR/ES back-translation (the X-lingual views)."""
 
-    LANG2NLLB = {"en": "eng_Latn", "ar": "arb_Arab", "es": "spa_Latn", "fr": "fra_Latn"}
+    # NLLB-200 codes. Extend freely — NLLB covers 200 languages; the practical
+    # ceiling is the frozen multilingual encoder's coverage (~50 langs for MiniLM).
+    LANG2NLLB = {
+        "en": "eng_Latn", "ar": "arb_Arab", "es": "spa_Latn", "fr": "fra_Latn",
+        "de": "deu_Latn", "zh": "zho_Hans", "hi": "hin_Deva", "ru": "rus_Cyrl",
+        "pt": "por_Latn", "it": "ita_Latn", "tr": "tur_Latn", "ur": "urd_Arab",
+        "fa": "pes_Arab", "ja": "jpn_Jpan", "ko": "kor_Hang", "id": "ind_Latn",
+    }
 
     def __init__(self, model_name: str = "facebook/nllb-200-distilled-600M", device: Optional[str] = None):
         self.model_name = model_name
@@ -205,6 +212,7 @@ def build_view_set(
     filt: Optional[IntentPreservationFilter] = None,
     families: Sequence[str] = ("paraphrase", "persona", "encoding:homoglyph"),
     crosslingual: Sequence[str] = ("ar", "es"),
+    crosslingual_max: int = 300,
 ) -> dict:
     """Build the augmented training set.
 
@@ -236,15 +244,23 @@ def build_view_set(
             view_lang.append(lang)
             out_labels.append(int(y))
 
-    # Cross-lingual views (batched). Only for positives is most informative, but
-    # we translate everything to keep groups balanced; caller can restrict.
+    # Cross-lingual views (batched). NLLB is the cost bottleneck, so cap at
+    # crosslingual_max anchors per language (subsampled deterministically) —
+    # matches the brief's "~200 each" and keeps 8-language training tractable.
     if crosslingual and bank.translator is not None:
+        rng = np.random.default_rng(1337)
+        if len(texts) > crosslingual_max:
+            sub = np.sort(rng.choice(len(texts), size=crosslingual_max, replace=False))
+        else:
+            sub = np.arange(len(texts))
+        sub_texts = [texts[i] for i in sub]
         for lang in crosslingual:
-            foreign_views = bank.backtranslate(texts, lang)
-            for gid, (t, y, fv) in enumerate(zip(texts, labels, foreign_views)):
+            foreign_views = bank.backtranslate(sub_texts, lang)
+            for gid, fv in zip(sub, foreign_views):
+                t, y = texts[gid], labels[gid]
                 if filt is not None and not filt.keep(t, fv):
                     continue
-                group_ids.append(gid)
+                group_ids.append(int(gid))
                 view_texts.append(fv.text)
                 view_family.append(fv.family)
                 view_lang.append(lang)

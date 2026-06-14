@@ -29,7 +29,8 @@ loss:                                  # the JOINT objective; a term is OFF iff 
 
 augment:                               # TRAINING-TIME views only
   families: [paraphrase, persona, "encoding:homoglyph", "encoding:base64"]
-  crosslingual: [ar, es]               # NLLB-200 EN<->AR/ES back-translation positives
+  crosslingual: [ar, es, fr, de, zh, hi, ru, pt]   # NLLB-200 back-translation positives (diverse-8, multi-script)
+  crosslingual_max: 300                # anchors/language back-translated (NLLB cost cap; ~brief's "200 each")
   nllb: facebook/nllb-200-distilled-600M
   intent_filter: true
   tau_keep: 0.5                        # embedding-sim accept threshold (NLI optional)

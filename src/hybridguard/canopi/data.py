@@ -35,6 +35,7 @@ __all__ = [
     "load_deepset",
     "load_notinject",
     "load_jbb",
+    "mt_multilingual_testset",
 ]
 
 SPLIT_SEED = 1337
@@ -183,3 +184,21 @@ def load_jbb() -> pd.DataFrame:
     df = pd.concat([pd.DataFrame(ds[s]) for s in ds.keys()], ignore_index=True)
     col = "Goal" if "Goal" in df.columns else ("Behavior" if "Behavior" in df.columns else df.columns[0])
     return pd.DataFrame({"text": df[col].astype(str), "label": 1})
+
+
+def mt_multilingual_testset(translator, en_pos_texts, langs, src: str = "en", max_n: int = 200):
+    """Scalable held-out multilingual eval (E3): translate English POSITIVE test
+    injections into each target language via NLLB. Held out from training and from
+    tau (tau is frozen on the English val split). Synthetic — flag vs the curated
+    AR/ES gold. `translator` is a duck-typed object with .translate(texts, src, tgt).
+    Returns {f'{lang}_mt': (texts, [1,...])}; recall is measured on these positives
+    at the English-frozen tau, so labels are all 1.
+    """
+    en = list(en_pos_texts)[:max_n]
+    out = {}
+    for lang in langs:
+        if lang == src:
+            continue
+        translated = translator.translate(en, src, lang)
+        out[f"{lang}_mt"] = (translated, [1] * len(translated))
+    return out
