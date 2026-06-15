@@ -68,8 +68,10 @@ def build_detectors(hg_detectors=None, load_sota=True):
         dev = 0 if torch.cuda.is_available() else -1
         for short, mid in SOTA_MODELS.items():
             try:
-                tok = AutoTokenizer.from_pretrained(mid)
-                mdl = AutoModelForSequenceClassification.from_pretrained(mid)
+                # trust_remote_code=True: InjecGuard ships custom code; setting this
+                # avoids the interactive "[y/N]" prompt so the notebook runs unattended.
+                tok = AutoTokenizer.from_pretrained(mid, trust_remote_code=True)
+                mdl = AutoModelForSequenceClassification.from_pretrained(mid, trust_remote_code=True)
                 mdl.eval()
                 if dev == 0:
                     mdl = mdl.cuda()
