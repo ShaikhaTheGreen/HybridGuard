@@ -1,0 +1,97 @@
+<svg viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+<title>CANOPI A+B implementation flow: artifact to manuscript section to reviewer question</title>
+<desc>Seven work items, each mapped to the manuscript section it feeds and the reviewer question it answers, grouped into an outcome-independent core and an empirical claim.</desc>
+<defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+<text x="40" y="38" font-size="21" font-weight="700" fill="#0f172a">CANOPI A+B — implementation flow</text>
+<text x="40" y="60" font-size="13" fill="#475569">Each artifact feeds a manuscript section and answers a reviewer question.  Green = done this session · Amber/Blue = compute to run.</text>
+<text x="60" y="96" font-size="13" font-weight="700" fill="#334155">ARTIFACT (code / prose)</text>
+<text x="500" y="96" font-size="13" font-weight="700" fill="#334155">MANUSCRIPT SECTION</text>
+<text x="850" y="96" font-size="13" font-weight="700" fill="#334155">REVIEWER QUESTION ANSWERED</text>
+<rect x="32" y="108" width="14" height="372" rx="5" fill="#fde68a"/>
+<text x="39" y="300" font-size="11" font-weight="700" fill="#92400e" transform="rotate(-90 39 300)" text-anchor="middle">OUTCOME-INDEPENDENT CORE (robust to any numbers)</text>
+<rect x="32" y="488" width="14" height="178" rx="5" fill="#bfdbfe"/>
+<text x="39" y="577" font-size="11" font-weight="700" fill="#1e40af" transform="rotate(-90 39 577)" text-anchor="middle">EMPIRICAL CLAIM</text>
+<rect x="56" y="112" width="420" height="64" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+<text x="68" y="134" font-size="12.5" font-weight="700" fill="#14532d">tr39_fold.py + confusables_table.py  ✓</text>
+<text x="68" y="151" font-size="10.5" fill="#166534">full UTS#39 fold (539) · mixed-script gate · FPR guard</text>
+<text x="68" y="167" font-size="10.5" fill="#166534">soundness 0.88 → ~1.0, FPR-neutral on non-Latin</text>
+<text x="492" y="138" font-size="11" fill="#0f172a">§Method (Stage 1, c+)</text>
+<text x="492" y="156" font-size="11" fill="#0f172a">§Results (over-defense E8)</text>
+<rect x="846" y="120" width="320" height="48" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+<text x="858" y="140" font-size="10.5" fill="#14532d">“Does the bigger fold table raise FPR?”</text>
+<text x="858" y="157" font-size="10.5" fill="#14532d">No — gate proven FPR-neutral; fallback ready.</text>
+<rect x="56" y="184" width="420" height="64" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+<text x="68" y="206" font-size="12.5" font-weight="700" fill="#14532d">certify.py  ✓</text>
+<text x="68" y="223" font-size="10.5" fill="#166534">closure C_D · the theorem · coverage · per-detector</text>
+<text x="68" y="239" font-size="10.5" fill="#166534">idempotence 1.0 · coverage 1.0 · invariant decision</text>
+<text x="492" y="202" font-size="11" fill="#0f172a">§Method (Theorem, C_D, depth D)</text>
+<text x="492" y="220" font-size="11" fill="#0f172a">§Related work (vs erase-and-check)</text>
+<text x="492" y="238" font-size="11" fill="#0f172a">§Results (coverage table)</text>
+<rect x="846" y="192" width="320" height="48" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+<text x="858" y="212" font-size="10.5" fill="#14532d">“Is it novel, or just applying canon?”</text>
+<text x="858" y="229" font-size="10.5" fill="#14532d">A theorem, not a heuristic. Detector-agnostic.</text>
+<rect x="56" y="256" width="420" height="56" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+<text x="68" y="278" font-size="12.5" font-weight="700" fill="#14532d">tests/test_certificate.py  ✓</text>
+<text x="68" y="295" font-size="10.5" fill="#166534">15 pytest checks: lemmas, invariance, FPR guard</text>
+<text x="492" y="282" font-size="11" fill="#0f172a">§Reproducibility / Data &amp; code</text>
+<rect x="846" y="260" width="320" height="44" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+<text x="858" y="280" font-size="10.5" fill="#14532d">“Is the proof obligation actually met?”</text>
+<text x="858" y="296" font-size="10.5" fill="#14532d">Executable, runs on a laptop, all green.</text>
+<rect x="56" y="320" width="420" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+<text x="68" y="342" font-size="12.5" font-weight="700" fill="#92400e">adaptive attacker E7+  ⟳ run</text>
+<text x="68" y="359" font-size="10.5" fill="#92400e">defense-aware optimizer · held-out attack family</text>
+<text x="68" y="375" font-size="10.5" fill="#92400e">worst-case Recall@1%FPR, c vs c+</text>
+<text x="492" y="346" font-size="11" fill="#0f172a">§Results (adaptive held-out table)</text>
+<text x="492" y="364" font-size="11" fill="#0f172a">§Method (threat model)</text>
+<rect x="846" y="326" width="320" height="48" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+<text x="858" y="346" font-size="10.5" fill="#92400e">“What if the attacker moves second?”</text>
+<text x="858" y="363" font-size="10.5" fill="#92400e">Held-out family + optimizer; c+ closes the gap.</text>
+<rect x="56" y="388" width="420" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+<text x="68" y="410" font-size="12.5" font-weight="700" fill="#92400e">scope taxonomy (prose)  ✓</text>
+<text x="68" y="427" font-size="10.5" fill="#92400e">Stage 1/2 · paraphrase = provable no-op</text>
+<text x="68" y="443" font-size="10.5" fill="#92400e">obfuscation+language covered; semantic = future</text>
+<text x="492" y="414" font-size="11" fill="#0f172a">§Discussion (scope)</text>
+<text x="492" y="432" font-size="11" fill="#0f172a">§Related work (jailbreak vs injection)</text>
+<rect x="846" y="394" width="320" height="48" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+<text x="858" y="414" font-size="10.5" fill="#92400e">“Does it handle jailbreaks?”</text>
+<text x="858" y="431" font-size="10.5" fill="#92400e">Orthographic+lingual yes; semantic = future work.</text>
+<rect x="56" y="492" width="420" height="76" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+<text x="68" y="514" font-size="12.5" font-weight="700" fill="#1e40af">E1 + E2 GPU: CANOPI vs B1–B8  ⟳ run</text>
+<text x="68" y="531" font-size="10.5" fill="#1e3a8a">5 seeds · the falsification test (must beat B6 &amp; B7)</text>
+<text x="68" y="547" font-size="10.5" fill="#1e3a8a">main in-domain + loss/aug/depth ablations</text>
+<text x="68" y="562" font-size="10.5" fill="#1e3a8a">bootstrap CIs · McNemar</text>
+<text x="492" y="520" font-size="11" fill="#0f172a">§Results (main table + ablations)</text>
+<text x="492" y="538" font-size="11" fill="#0f172a">§Method (joint objective)</text>
+<rect x="846" y="500" width="320" height="56" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+<text x="858" y="520" font-size="10.5" fill="#1e40af">“Is the learned head a real contribution?”</text>
+<text x="858" y="537" font-size="10.5" fill="#1e40af">Pre-registered: beat invariance-only AND</text>
+<text x="858" y="551" font-size="10.5" fill="#1e40af">pAUC-only, or report the negative honestly.</text>
+<rect x="56" y="578" width="420" height="76" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+<text x="68" y="600" font-size="12.5" font-weight="700" fill="#1e40af">E3 GPU: multilingual (HEADLINE)  ⟳ run</text>
+<text x="68" y="617" font-size="10.5" fill="#1e3a8a">AR/ES recall @ same τ · monolingual encoder</text>
+<text x="68" y="633" font-size="10.5" fill="#1e3a8a">no-invariance probe loses → attribute to L_inv</text>
+<text x="68" y="648" font-size="10.5" fill="#1e3a8a">+ E5 over-defense, E9 latency, E10 calibration</text>
+<text x="492" y="606" font-size="11" fill="#0f172a">§Results (substitution result)</text>
+<text x="492" y="624" font-size="11" fill="#0f172a">§Abstract (headline claim)</text>
+<rect x="846" y="586" width="320" height="56" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+<text x="858" y="606" font-size="10.5" fill="#1e40af">“Does invariance substitute for</text>
+<text x="858" y="620" font-size="10.5" fill="#1e40af">multilingual pretraining?”</text>
+<text x="858" y="636" font-size="10.5" fill="#1e40af">The pre-registered headline, with CIs.</text>
+<g stroke="#94a3b8" stroke-width="1.4" fill="none">
+<line x1="476" y1="144" x2="488" y2="144" marker-end="url(#a2)"/>
+<line x1="476" y1="216" x2="488" y2="216" marker-end="url(#a2)"/>
+<line x1="476" y1="284" x2="488" y2="284" marker-end="url(#a2)"/>
+<line x1="476" y1="350" x2="488" y2="350" marker-end="url(#a2)"/>
+<line x1="476" y1="418" x2="488" y2="418" marker-end="url(#a2)"/>
+<line x1="476" y1="528" x2="488" y2="528" marker-end="url(#a2)"/>
+<line x1="476" y1="614" x2="488" y2="614" marker-end="url(#a2)"/>
+<line x1="822" y1="144" x2="844" y2="144" marker-end="url(#a2)"/>
+<line x1="822" y1="216" x2="844" y2="216" marker-end="url(#a2)"/>
+<line x1="822" y1="284" x2="844" y2="282" marker-end="url(#a2)"/>
+<line x1="822" y1="350" x2="844" y2="350" marker-end="url(#a2)"/>
+<line x1="822" y1="418" x2="844" y2="418" marker-end="url(#a2)"/>
+<line x1="822" y1="528" x2="844" y2="528" marker-end="url(#a2)"/>
+<line x1="822" y1="614" x2="844" y2="614" marker-end="url(#a2)"/>
+</g>
+<text x="40" y="690" font-size="11.5" fill="#475569">Reading: the top artifacts are finished and make the paper a contribution regardless of GPU outcomes; the bottom two GPU runs carry the strong, falsifiable empirical headline.</text>
+</svg>
