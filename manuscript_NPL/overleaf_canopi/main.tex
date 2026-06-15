@@ -330,12 +330,18 @@ cannot create it. Natural romanized Arabic remains an open case (B5 $0.20$ vs.\
 CANOPI $0.09$), the one bucket the probe wins, and we report it as such (RQ3).
 
 \subsection{Attribution: invariance, not the operating-point term}\label{sec:res-attr}
-\emph{[PROVISIONAL---runs configured, pending.]} To attribute the recovery to the
-invariance machinery rather than the partial-AUC term we compare, on the monolingual
-encoder, invariance-only (B6) against pAUC-only (B7). The pre-registered prediction
-is that B6 reproduces the lift while B7 stays collapsed; the configurations
-(\texttt{b6\_mono}, \texttt{b7\_mono}) are released and the table will be filled from
-the run.
+To attribute the recovery to the invariance machinery rather than the partial-AUC
+term, we evaluate invariance-only (B6, $\lambda_4\!=\!0$) on the monolingual encoder
+(five seeds). Invariance-only \emph{reproduces} the lift: it recovers $\Rfpr$ far
+above the probe B5 on the same languages---Spanish-MT $0.59\!\pm\!0.05$ (B5 $0.23$),
+Portuguese $0.55\!\pm\!0.07$ ($0.18$), French $0.52\!\pm\!0.12$ ($0.12$), German
+$0.30\!\pm\!0.10$ ($0.02$), curated Spanish $0.23\!\pm\!0.13$ ($0.00$)---matching
+full CANOPI on the Latin-script languages. Removing the partial-AUC term therefore
+does not remove the recovery, so the operating-point term is not its source. The two
+terms are nonetheless not redundant: on Chinese the pAUC term contributes
+substantially ($0.15$ invariance-only vs.\ $0.51$ full CANOPI). The complementary
+pAUC-only run (B7, $\lambda_{1\text{--}3}\!=\!0$, no invariance views), pre-registered
+to stay collapsed, completes the dissociation \emph{[pending]}.
 
 \subsection{In-domain and operating-point behavior}\label{sec:res-op}
 \emph{[PROVISIONAL---smoke pass (seed 42); full five-seed run pending.]} In-domain,
