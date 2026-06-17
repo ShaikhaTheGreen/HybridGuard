@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hybridguard"
-version = "0.2.0"
-description = "Canonicalization-aware, contrastive, adversarially trained prompt-injection detection for LLM pipelines."
+version = "1.0.0"
+description = "Certified canonicalization: a detector-agnostic primitive for prompt-injection defense in LLM pipelines."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

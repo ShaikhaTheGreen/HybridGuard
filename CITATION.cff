@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "CANOPI: Certified Canonicalization for Prompt-Injection Defense"
+abstract: >-
+  Reference implementation for the paper "Certified Canonicalization: A
+  Detector-Agnostic Defense against Prompt-Injection Obfuscation." Includes the
+  canonicalization package, the decision-invariance certificate checker, the
+  defense-aware adaptive attacker, the B1-B8 benchmark suite, and a one-run
+  reproducibility notebook.
+type: software
+authors:
+  - given-names: Shaikhah
+    family-names: Alkhadhr
+    orcid: "https://orcid.org/0000-0001-5938-2953"
+    affiliation: "Information Science Department, Kuwait University"
+    email: s.alkhadhr@ku.edu.kw
+  - given-names: Heba
+    family-names: Alturki
+    orcid: "https://orcid.org/0009-0004-4220-7947"
+    affiliation: "Information Science Department, Kuwait University"
+  - given-names: Aseel
+    family-names: Alqemlas
+    orcid: "https://orcid.org/0009-0005-3960-7074"
+    affiliation: "Information Science Department, Kuwait University"
+version: "1.0.0"
+date-released: "2026-06-16"
+license: MIT
+repository-code: "https://github.com/ShaikhaTheGreen/HybridGuard"
+keywords:
+  - prompt injection
+  - LLM security
+  - certified robustness
+  - canonicalization
+  - Unicode confusables
+  - adversarial NLP
+# After minting a Zenodo DOI, add the concept DOI here:
+# doi: "10.5281/zenodo.XXXXXXX"
