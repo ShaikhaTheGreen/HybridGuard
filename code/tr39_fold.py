@@ -75,13 +75,20 @@ def script_profile(s: str) -> Dict[str, int]:
 
 
 def _is_attack_context(s: str) -> bool:
-    """True when s looks like a mixed-script homoglyph attack: it contains ASCII
-    letters AND at least one non-Latin letter. A purely non-Latin string (genuine
-    foreign text) returns False, so it is never folded -> FPR-neutral."""
+    """True when s is MIXED-SCRIPT, the signature of a homoglyph attack: its letters
+    come from two or more distinct scripts (e.g. Latin+Cyrillic, or a cocktail of
+    Cyrillic/Greek/Coptic/Armenian look-alikes). A string whose letters are all one
+    script -- genuine foreign text (pure Russian, Greek, Arabic, Chinese) -- returns
+    False and is never folded, so the fold is FPR-neutral by construction.
+
+    This is broader than the earlier 'ASCII letter + non-Latin letter' rule, which
+    missed the worst case: an attacker who substitutes EVERY ASCII letter (including
+    the anchor, e.g. with full-width forms) leaves zero true-ASCII letters, so the
+    old gate misfired, skipped the fold, and let NFKC mangle the still-cross-script
+    confusables -- a closure-soundness gap. Counting distinct scripts closes that gap
+    while folding strictly more attacks and no more benign single-script text."""
     prof = script_profile(s)
-    latin = prof.get("latin", 0)
-    non_latin = sum(v for k, v in prof.items() if k != "latin")
-    return latin > 0 and non_latin > 0
+    return len(prof) >= 2
 
 
 def _fold_chars(s: str) -> str:

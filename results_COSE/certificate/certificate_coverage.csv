@@ -1,0 +1,7 @@
+family,operators,n_attacks,coverage_in_C_D,residual,certified,note
+confusable_known,homoglyph_base,45,1.0,0.0,True,certified: provable 0% attack success
+confusable_tr39,homoglyph_tr39,45,1.0,0.0,True,certified: provable 0% attack success
+smallcap_oom,smallcap_oom,45,0.0,1.0,False,residual handed to empirical hardening
+invisible_tag,zero_width+tag_smuggle,90,1.0,0.0,True,certified: provable 0% attack success
+structural,spacing+leet,90,0.0,1.0,False,residual handed to empirical hardening
+semantic,paraphrase,45,0.0,1.0,False,semantic no-op (out of scope)

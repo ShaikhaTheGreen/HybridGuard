@@ -1,0 +1,151 @@
+{
+  "idempotence": 1.0,
+  "closure_soundness_full_table": 1.0,
+  "closure_soundness_base_map": 0.3318,
+  "certificate_coverage_overall": 0.6,
+  "per_detector_invariance": {
+    "regex": 1.0,
+    "tfidf_svm": 1.0,
+    "keyword": 1.0,
+    "protectai/deberta": 1.0,
+    "InjecGuard": 1.0
+  },
+  "fpr_neutrality": {
+    "regex": {
+      "n": 21,
+      "flips": 0,
+      "flip_rate": 0.0
+    },
+    "tfidf_svm": {
+      "n": 21,
+      "flips": 0,
+      "flip_rate": 0.0
+    },
+    "keyword": {
+      "n": 21,
+      "flips": 0,
+      "flip_rate": 0.0
+    },
+    "protectai/deberta": {
+      "n": 21,
+      "flips": 0,
+      "flip_rate": 0.0
+    },
+    "InjecGuard": {
+      "n": 21,
+      "flips": 0,
+      "flip_rate": 0.0
+    }
+  },
+  "fpr_neutral_benign_n": 21,
+  "fpr_neutral_max_flip_rate": 0.0,
+  "n_detectors_checked": 5,
+  "detectors_checked": [
+    "regex",
+    "tfidf_svm",
+    "keyword",
+    "protectai/deberta",
+    "InjecGuard"
+  ],
+  "families": {
+    "confusable_known": {
+      "coverage": 1.0,
+      "residual": 0.0,
+      "n_attacks": 45,
+      "semantic": false
+    },
+    "confusable_tr39": {
+      "coverage": 1.0,
+      "residual": 0.0,
+      "n_attacks": 45,
+      "semantic": false
+    },
+    "smallcap_oom": {
+      "coverage": 0.0,
+      "residual": 1.0,
+      "n_attacks": 45,
+      "semantic": false
+    },
+    "invisible_tag": {
+      "coverage": 1.0,
+      "residual": 0.0,
+      "n_attacks": 90,
+      "semantic": false
+    },
+    "structural": {
+      "coverage": 0.0,
+      "residual": 1.0,
+      "n_attacks": 90,
+      "semantic": false
+    },
+    "semantic": {
+      "coverage": 0.0,
+      "residual": 1.0,
+      "n_attacks": 45,
+      "semantic": true
+    }
+  },
+  "lofo_splits": {
+    "confusable_known": {
+      "train": [
+        "confusable_tr39",
+        "smallcap_oom",
+        "invisible_tag",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "confusable_known"
+    },
+    "confusable_tr39": {
+      "train": [
+        "confusable_known",
+        "smallcap_oom",
+        "invisible_tag",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "confusable_tr39"
+    },
+    "smallcap_oom": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "invisible_tag",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "smallcap_oom"
+    },
+    "invisible_tag": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "smallcap_oom",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "invisible_tag"
+    },
+    "structural": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "smallcap_oom",
+        "invisible_tag",
+        "semantic"
+      ],
+      "holdout": "structural"
+    },
+    "semantic": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "smallcap_oom",
+        "invisible_tag",
+        "structural"
+      ],
+      "holdout": "semantic"
+    }
+  },
+  "seed": 42
+}

@@ -1,0 +1,29 @@
+{
+  "rows": [
+    {
+      "detector": "regex",
+      "benign_fpr_raw": 0.0,
+      "benign_fpr_canon": 0.0,
+      "delta": 0.0
+    },
+    {
+      "detector": "tfidf_svm",
+      "benign_fpr_raw": 0.2832,
+      "benign_fpr_canon": 0.2832,
+      "delta": 0.0
+    },
+    {
+      "detector": "protectai/deberta",
+      "benign_fpr_raw": 0.5074,
+      "benign_fpr_canon": 0.5015,
+      "delta": -0.0059
+    },
+    {
+      "detector": "InjecGuard",
+      "benign_fpr_raw": 0.0619,
+      "benign_fpr_canon": 0.0619,
+      "delta": 0.0
+    }
+  ],
+  "fpr_neutral": false
+}

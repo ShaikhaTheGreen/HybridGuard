@@ -1,0 +1,23 @@
+\begin{table}[ht]\centering
+\caption{Detector-agnostic recovery. Recall@1\%FPR on adversarially obfuscated injections, without and with canonicalization. Canonicalization restores recall across all detectors.}
+\label{tab:recovery}
+\small
+\begin{tabular}{llccccc}
+\toprule
+Attack & Cond. & CANOPI & InjecGuard & protectai/deberta & regex & tfidf_svm \\
+\midrule
+homoglyph & attacked & 0.960 & 0.003 & 0.995 & 0.020 & 0.578 \\
+ & +canon & 0.960 & 0.425 & 0.912 & 0.133 & 0.990 \\
+\midrule
+leet & attacked & 0.853 & 0.380 & 1.000 & 0.020 & 0.477 \\
+ & +canon & 0.973 & 0.367 & 0.943 & 0.040 & 0.985 \\
+\midrule
+spacing & attacked & 0.422 & 0.000 & 1.000 & 0.018 & 0.890 \\
+ & +canon & 0.963 & 0.323 & 0.950 & 0.050 & 0.922 \\
+\midrule
+zero_width & attacked & 0.960 & 0.000 & 1.000 & 0.010 & 0.130 \\
+ & +canon & 0.960 & 0.425 & 0.912 & 0.133 & 0.990 \\
+\midrule
+\bottomrule
+\end{tabular}
+\end{table}

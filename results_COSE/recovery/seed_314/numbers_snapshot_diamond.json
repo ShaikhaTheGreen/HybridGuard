@@ -1,0 +1,102 @@
+{
+  "CANOPI": {
+    "recall_clean": 0.96,
+    "threshold": 0.5721941590309143,
+    "homoglyph": {
+      "attacked": 0.96,
+      "recovered": 0.96
+    },
+    "zero_width": {
+      "attacked": 0.96,
+      "recovered": 0.96
+    },
+    "leet": {
+      "attacked": 0.8525,
+      "recovered": 0.9725
+    },
+    "spacing": {
+      "attacked": 0.4225,
+      "recovered": 0.9625
+    }
+  },
+  "regex": {
+    "recall_clean": 0.1325,
+    "threshold": 0.7999999999999999,
+    "homoglyph": {
+      "attacked": 0.02,
+      "recovered": 0.1325
+    },
+    "zero_width": {
+      "attacked": 0.01,
+      "recovered": 0.1325
+    },
+    "leet": {
+      "attacked": 0.02,
+      "recovered": 0.04
+    },
+    "spacing": {
+      "attacked": 0.0175,
+      "recovered": 0.05
+    }
+  },
+  "tfidf_svm": {
+    "recall_clean": 0.99,
+    "threshold": 0.15583261967912818,
+    "homoglyph": {
+      "attacked": 0.5775,
+      "recovered": 0.99
+    },
+    "zero_width": {
+      "attacked": 0.13,
+      "recovered": 0.99
+    },
+    "leet": {
+      "attacked": 0.4775,
+      "recovered": 0.985
+    },
+    "spacing": {
+      "attacked": 0.89,
+      "recovered": 0.9225
+    }
+  },
+  "protectai/deberta": {
+    "recall_clean": 0.9125,
+    "threshold": 0.0019835163839161396,
+    "homoglyph": {
+      "attacked": 0.995,
+      "recovered": 0.9125
+    },
+    "zero_width": {
+      "attacked": 1.0,
+      "recovered": 0.9125
+    },
+    "leet": {
+      "attacked": 1.0,
+      "recovered": 0.9425
+    },
+    "spacing": {
+      "attacked": 1.0,
+      "recovered": 0.95
+    }
+  },
+  "InjecGuard": {
+    "recall_clean": 0.425,
+    "threshold": 0.9929108023643494,
+    "homoglyph": {
+      "attacked": 0.0025,
+      "recovered": 0.425
+    },
+    "zero_width": {
+      "attacked": 0.0,
+      "recovered": 0.425
+    },
+    "leet": {
+      "attacked": 0.38,
+      "recovered": 0.3675
+    },
+    "spacing": {
+      "attacked": 0.0,
+      "recovered": 0.3225
+    }
+  }
+}

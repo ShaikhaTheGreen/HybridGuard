@@ -61,7 +61,7 @@ import random
 import unicodedata
 from typing import Callable, Dict, Iterable, List, Sequence
 
-from canonicalize import canonicalize  # the deterministic primitive c(.)
+from canonicalize import canonicalize, decode_nested  # the deterministic primitive c(.)
 from tr39_fold import fold_confusables  # full UTS#39 fold under the mixed-script gate
 
 __all__ = [
@@ -102,14 +102,27 @@ def _strip_special_blocks(s: str) -> str:
 def canon(x: str, gate: str = "string") -> str:
     """The CERTIFIED canonicalizer c*(.). Standardized, sound, idempotent.
 
-    Order: gated UTS#39 cross-script fold -> strip invisibles -> strip Tag/VS
-    blocks -> NFKC compatibility fold -> strip combining marks -> collapse
-    whitespace. Every step is standardized and (near-)bijective on the canonical
-    token sequence, which is what makes the decision-invariance theorem hold and
-    keeps c* FPR-neutral on genuine non-Latin text. The deployed c+ may add the
-    heuristic de-leet/de-segment passes from canonicalize.py for extra empirical
-    coverage, but those are OUTSIDE the certificate."""
-    s = fold_confusables(x, gate)
+    Order: depth-bounded decode of nested encodings -> gated UTS#39 cross-script
+    fold -> strip invisibles -> strip Tag/VS blocks -> NFKC compatibility fold ->
+    strip combining marks -> collapse whitespace. Every step is standardized and
+    (near-)bijective on the canonical token sequence, which is what makes the
+    decision-invariance theorem hold and keeps c* FPR-neutral on genuine non-Latin
+    text.
+
+    The confusable fold runs BEFORE NFKC on purpose. A few standardized confusables
+    are lossy under NFKC: the Greek lunate sigma 'ϲ' (a 'c' look-alike) NFKC-folds to
+    final sigma 'ς', which is no longer a fold-table key; the ogonek '˛' (an 'i'
+    look-alike) NFKC-decomposes to a space plus a combining mark that the
+    combining-strip then deletes, dropping the letter. Folding cross-script
+    confusables to ASCII first means these characters become 'c'/'i' before NFKC can
+    mangle them, so the closure is sound (=1.0). The fold's mixed-script gate (>=2
+    scripts) recognizes the attack regardless of whether a true-ASCII anchor
+    survives, and leaves genuine single-script non-Latin text untouched -> FPR-
+    neutral. The deployed c+ may add the heuristic de-leet/de-segment passes from
+    canonicalize.py for extra empirical coverage, but those are OUTSIDE the
+    certificate."""
+    s = decode_nested(x)                 # peel nested base64/hex/URL/ROT13 to D
+    s = fold_confusables(s, gate)        # fold first: before NFKC can mangle look-alikes
     s = s.translate(_INVISIBLE)
     s = _strip_special_blocks(s)
     s = unicodedata.normalize("NFKC", s)

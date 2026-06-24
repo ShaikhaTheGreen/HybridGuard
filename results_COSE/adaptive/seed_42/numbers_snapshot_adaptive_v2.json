@@ -1,0 +1,600 @@
+{
+  "CANOPI": {
+    "clean": 0.9675,
+    "families": {
+      "confusable_known": {
+        "none": {
+          "recall": 0.9675,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.9675,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9675,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        }
+      },
+      "confusable_tr39": {
+        "none": {
+          "recall": 0.985,
+          "op": "homoglyph_tr39",
+          "sigma": 0.7
+        },
+        "c": {
+          "recall": 0.9675,
+          "op": "homoglyph_tr39",
+          "sigma": 0.7
+        },
+        "cplus": {
+          "recall": 0.9675,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        }
+      },
+      "smallcap_oom": {
+        "none": {
+          "recall": 0.9925,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.9925,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9625,
+          "op": "smallcap_oom",
+          "sigma": 0.9
+        }
+      },
+      "invisible_tag": {
+        "none": {
+          "recall": 0.9675,
+          "op": "zero_width",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.9675,
+          "op": "zero_width",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9675,
+          "op": "zero_width",
+          "sigma": 0.3
+        }
+      },
+      "structural": {
+        "none": {
+          "recall": 0.365,
+          "op": "spacing",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.955,
+          "op": "leet",
+          "sigma": 0.5
+        },
+        "cplus": {
+          "recall": 0.955,
+          "op": "leet",
+          "sigma": 0.5
+        }
+      },
+      "semantic": {
+        "none": {
+          "recall": 0.96,
+          "op": "paraphrase",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.96,
+          "op": "paraphrase",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.96,
+          "op": "paraphrase",
+          "sigma": 0.9
+        }
+      }
+    }
+  },
+  "regex": {
+    "clean": 0.1325,
+    "families": {
+      "confusable_known": {
+        "none": {
+          "recall": 0.0175,
+          "op": "homoglyph_base",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.1325,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.1325,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        }
+      },
+      "confusable_tr39": {
+        "none": {
+          "recall": 0.0,
+          "op": "homoglyph_tr39",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.005,
+          "op": "homoglyph_tr39",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.1325,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        }
+      },
+      "smallcap_oom": {
+        "none": {
+          "recall": 0.0,
+          "op": "smallcap_oom",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.0,
+          "op": "smallcap_oom",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.1325,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        }
+      },
+      "invisible_tag": {
+        "none": {
+          "recall": 0.0,
+          "op": "zero_width",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.0025,
+          "op": "tag_smuggle",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.1275,
+          "op": "tag_smuggle",
+          "sigma": 0.5
+        }
+      },
+      "structural": {
+        "none": {
+          "recall": 0.01,
+          "op": "spacing",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.0275,
+          "op": "spacing",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.0275,
+          "op": "spacing",
+          "sigma": 0.9
+        }
+      },
+      "semantic": {
+        "none": {
+          "recall": 0.0575,
+          "op": "paraphrase",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.0575,
+          "op": "paraphrase",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.0575,
+          "op": "paraphrase",
+          "sigma": 0.3
+        }
+      }
+    }
+  },
+  "tfidf_svm": {
+    "clean": 0.99,
+    "families": {
+      "confusable_known": {
+        "none": {
+          "recall": 0.3975,
+          "op": "homoglyph_base",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.99,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.99,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        }
+      },
+      "confusable_tr39": {
+        "none": {
+          "recall": 0.08,
+          "op": "homoglyph_tr39",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.28,
+          "op": "homoglyph_tr39",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.99,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        }
+      },
+      "smallcap_oom": {
+        "none": {
+          "recall": 0.02,
+          "op": "smallcap_oom",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.065,
+          "op": "smallcap_oom",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.99,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        }
+      },
+      "invisible_tag": {
+        "none": {
+          "recall": 0.075,
+          "op": "tag_smuggle",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.075,
+          "op": "tag_smuggle",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.99,
+          "op": "zero_width",
+          "sigma": 0.3
+        }
+      },
+      "structural": {
+        "none": {
+          "recall": 0.275,
+          "op": "leet",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.7975,
+          "op": "spacing",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.7975,
+          "op": "spacing",
+          "sigma": 0.9
+        }
+      },
+      "semantic": {
+        "none": {
+          "recall": 0.99,
+          "op": "paraphrase",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.99,
+          "op": "paraphrase",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.99,
+          "op": "paraphrase",
+          "sigma": 0.3
+        }
+      }
+    }
+  },
+  "protectai/deberta": {
+    "clean": 0.9125,
+    "families": {
+      "confusable_known": {
+        "none": {
+          "recall": 0.9825,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.9125,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9125,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        }
+      },
+      "confusable_tr39": {
+        "none": {
+          "recall": 1.0,
+          "op": null,
+          "sigma": null
+        },
+        "c": {
+          "recall": 1.0,
+          "op": null,
+          "sigma": null
+        },
+        "cplus": {
+          "recall": 0.9125,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        }
+      },
+      "smallcap_oom": {
+        "none": {
+          "recall": 0.9975,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.9975,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9175,
+          "op": "smallcap_oom",
+          "sigma": 0.3
+        }
+      },
+      "invisible_tag": {
+        "none": {
+          "recall": 1.0,
+          "op": null,
+          "sigma": null
+        },
+        "c": {
+          "recall": 0.9125,
+          "op": "zero_width",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9125,
+          "op": "zero_width",
+          "sigma": 0.3
+        }
+      },
+      "structural": {
+        "none": {
+          "recall": 0.9875,
+          "op": "spacing",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.9225,
+          "op": "spacing",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.9225,
+          "op": "spacing",
+          "sigma": 0.3
+        }
+      },
+      "semantic": {
+        "none": {
+          "recall": 0.9025,
+          "op": "paraphrase",
+          "sigma": 0.7
+        },
+        "c": {
+          "recall": 0.9025,
+          "op": "paraphrase",
+          "sigma": 0.7
+        },
+        "cplus": {
+          "recall": 0.9025,
+          "op": "paraphrase",
+          "sigma": 0.7
+        }
+      }
+    }
+  },
+  "InjecGuard": {
+    "clean": 0.425,
+    "families": {
+      "confusable_known": {
+        "none": {
+          "recall": 0.0025,
+          "op": "homoglyph_base",
+          "sigma": 0.7
+        },
+        "c": {
+          "recall": 0.425,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.425,
+          "op": "homoglyph_base",
+          "sigma": 0.3
+        }
+      },
+      "confusable_tr39": {
+        "none": {
+          "recall": 0.0,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.0,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.425,
+          "op": "homoglyph_tr39",
+          "sigma": 0.3
+        }
+      },
+      "smallcap_oom": {
+        "none": {
+          "recall": 0.0,
+          "op": "smallcap_oom",
+          "sigma": 0.5
+        },
+        "c": {
+          "recall": 0.0,
+          "op": "smallcap_oom",
+          "sigma": 0.5
+        },
+        "cplus": {
+          "recall": 0.3675,
+          "op": "smallcap_oom",
+          "sigma": 0.9
+        }
+      },
+      "invisible_tag": {
+        "none": {
+          "recall": 0.0,
+          "op": "zero_width",
+          "sigma": 0.3
+        },
+        "c": {
+          "recall": 0.0,
+          "op": "tag_smuggle",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.42,
+          "op": "tag_smuggle",
+          "sigma": 0.3
+        }
+      },
+      "structural": {
+        "none": {
+          "recall": 0.0,
+          "op": "spacing",
+          "sigma": 0.9
+        },
+        "c": {
+          "recall": 0.295,
+          "op": "spacing",
+          "sigma": 0.9
+        },
+        "cplus": {
+          "recall": 0.295,
+          "op": "spacing",
+          "sigma": 0.9
+        }
+      },
+      "semantic": {
+        "none": {
+          "recall": 0.395,
+          "op": "paraphrase",
+          "sigma": 0.5
+        },
+        "c": {
+          "recall": 0.395,
+          "op": "paraphrase",
+          "sigma": 0.3
+        },
+        "cplus": {
+          "recall": 0.395,
+          "op": "paraphrase",
+          "sigma": 0.3
+        }
+      }
+    }
+  },
+  "_lofo_splits": {
+    "confusable_known": {
+      "train": [
+        "confusable_tr39",
+        "smallcap_oom",
+        "invisible_tag",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "confusable_known"
+    },
+    "confusable_tr39": {
+      "train": [
+        "confusable_known",
+        "smallcap_oom",
+        "invisible_tag",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "confusable_tr39"
+    },
+    "smallcap_oom": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "invisible_tag",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "smallcap_oom"
+    },
+    "invisible_tag": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "smallcap_oom",
+        "structural",
+        "semantic"
+      ],
+      "holdout": "invisible_tag"
+    },
+    "structural": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "smallcap_oom",
+        "invisible_tag",
+        "semantic"
+      ],
+      "holdout": "structural"
+    },
+    "semantic": {
+      "train": [
+        "confusable_known",
+        "confusable_tr39",
+        "smallcap_oom",
+        "invisible_tag",
+        "structural"
+      ],
+      "holdout": "semantic"
+    }
+  },
+  "_seed": 42
+}

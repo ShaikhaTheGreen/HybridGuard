@@ -55,11 +55,29 @@ SOTA_MODELS = {
 
 
 # ---- uniform detector adapter: name -> function(list[str]) -> p_malicious[0,1] ----
-def build_detectors(hg_detectors=None, load_sota=True):
+def build_detectors(hg_detectors=None, load_sota=True, train_data=None, seed=42,
+                    add_blackbox=True):
+    """Assemble the detector zoo behind one callable(list[str]) -> scores interface.
+
+    The manuscript evaluates canonicalization as a black-box wrapper around FOUR
+    heterogeneous detectors plus the CANOPI reference. Two of them are light and
+    internals-free (a regex baseline and a TF-IDF+LinearSVM, both from
+    blackbox_detectors.py); the other two are the neural SOTA models loaded from
+    HuggingFace under `load_sota`. `train_data=(X_train, y_train)` is required to
+    fit the TF-IDF detector; if it is absent the TF-IDF detector is skipped with a
+    warning (the regex detector needs no training)."""
     det = {}
     for name, obj in (hg_detectors or {}).items():
         if obj is not None:
             det[name] = (lambda o: (lambda texts: np.asarray(o.predict_proba(list(texts)))[:, 1]))(obj)
+    if add_blackbox:
+        from blackbox_detectors import make_regex_detector, make_tfidf_detector
+        det["regex"] = make_regex_detector()
+        if train_data is not None:
+            Xtr, ytr = train_data
+            det["tfidf_svm"] = make_tfidf_detector(Xtr, ytr, seed=seed)
+        else:
+            warnings.warn("train_data not provided: skipping TF-IDF+LinearSVM detector")
     if not load_sota:
         return det
     try:
@@ -99,12 +117,33 @@ def build_detectors(hg_detectors=None, load_sota=True):
 
 
 # ---- metrics ----
+_OVER_TRIGGER_EPS = 0.02
+
+
+def _recovered_fraction(rec_clean, rec_atk, rec_can):
+    """Recovered fraction of the obfuscation-induced recall drop, GUARDED against
+    the over-trigger case. When attack recall EXCEEDS clean recall (rec_atk >
+    rec_clean), the detector is tripped, not evaded: the obfuscation makes the input
+    look more suspicious so recall rises, and canonicalization NORMALIZES it back
+    toward the clean value. There is no 'drop' to recover, so recovered_frac is
+    undefined (the old code divided by ~0 and produced -7.8e7). We flag this as a
+    labeled phenomenon instead.
+
+    Returns dict(recovered_frac, over_trigger). recovered_frac is in [0,1] clamped
+    when a genuine drop exists, and None when over_trigger is True."""
+    drop = rec_clean - rec_atk
+    if drop <= _OVER_TRIGGER_EPS:
+        # negligible or negative drop -> over-trigger (or no effect); ratio is undefined
+        return {"recovered_frac": None, "over_trigger": bool(rec_atk > rec_clean + _OVER_TRIGGER_EPS)}
+    frac = (rec_can - rec_atk) / drop
+    return {"recovered_frac": round(max(0.0, min(frac, 1.0)), 3), "over_trigger": False}
+
+
 def threshold_at_fpr(y, p, fpr=TARGET_FPR):
-    neg = np.sort(np.asarray(p)[np.asarray(y) == 0])
-    if len(neg) == 0:
-        return 1.0
-    k = min(max(int(np.floor((1 - fpr) * len(neg))), 0), len(neg) - 1)
-    return float(neg[k])
+    # Single source of truth: stats.threshold_at_fpr (identical frozen 1%-FPR
+    # convention across every experiment, so thresholds match the adaptive run).
+    from stats import threshold_at_fpr as _t
+    return _t(y, p, fpr)
 
 def recall_at(y, p, thr):
     y, p = np.asarray(y), np.asarray(p)
@@ -124,9 +163,9 @@ def ece_fixed(y, p, n_bins=15):
 
 
 def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_diamond_out",
-        load_sota=True, max_pos=MAX_POS):
+        load_sota=True, max_pos=MAX_POS, seed=0, train_data=None):
     os.makedirs(out_dir, exist_ok=True)
-    det = build_detectors(hg_detectors, load_sota=load_sota)
+    det = build_detectors(hg_detectors, load_sota=load_sota, train_data=train_data, seed=seed)
     assert len(det) >= 2, "Need >=2 detectors for the detector-agnostic claim."
     print("Detectors:", list(det))
 
@@ -144,7 +183,7 @@ def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_diamond_ou
         snap.setdefault(dname, {})["recall_clean"] = rec_clean
         snap[dname]["threshold"] = thr
         for atk in ATTACKS:
-            Xatk = [perturb(t, atk, SIGMA_MAIN) for t in Xpos]
+            Xatk = [perturb(t, atk, SIGMA_MAIN, seed=seed) for t in Xpos]
             Xcan = [canonicalize(t) for t in Xatk]
             rec_atk = float((fn(Xatk) >= thr).mean())
             rec_can = float((fn(Xcan) >= thr).mean())
@@ -153,10 +192,10 @@ def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_diamond_ou
                              recall_attacked=round(rec_atk, 4),
                              recall_recovered=round(rec_can, 4),
                              drop=round(rec_clean - rec_atk, 4),
-                             recovered_frac=round((rec_can - rec_atk) / max(rec_clean - rec_atk, 1e-9), 3)))
+                             **_recovered_fraction(rec_clean, rec_atk, rec_can)))
             snap[dname][atk] = {"attacked": rec_atk, "recovered": rec_can}
             for s in SIGMAS:
-                Xs = [perturb(t, atk, s) for t in Xpos]
+                Xs = [perturb(t, atk, s, seed=seed) for t in Xpos]
                 Xsc = [canonicalize(t) for t in Xs]
                 curve_rows.append(dict(detector=dname, attack=atk, sigma=s,
                                        attacked=round(float((fn(Xs) >= thr).mean()), 4),
@@ -169,16 +208,19 @@ def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_diamond_ou
     _make_figure(rows, os.path.join(out_dir, "fig_canon_recovery"))
     json.dump(snap, open(os.path.join(out_dir, "numbers_snapshot_diamond.json"), "w"), indent=2)
 
-    # corrected in-domain metrics (R1.3/R2.3) for every detector
+    # corrected in-domain metrics (R1.3/R2.3) for every detector. AUROC and AUPRC are
+    # reported as CO-PRIMARY ranking metrics: on a saturated benchmark AUROC compresses
+    # all strong models to ~1.0, while AUPRC still separates them.
     met = []
-    from sklearn.metrics import average_precision_score
+    from stats import auroc as _auroc, auprc as _auprc
     for dname, fn in det.items():
         thr = threshold_at_fpr(y_val, fn(list(X_val)), TARGET_FPR)
         pt = fn(list(X_test)); yt = np.asarray(y_test)
         pred = (pt >= thr).astype(int)
         tp = int(((pred == 1) & (yt == 1)).sum()); fp = int(((pred == 1) & (yt == 0)).sum()); fn_ = int(((pred == 0) & (yt == 1)).sum())
         prec = tp / (tp + fp) if tp + fp else 0.0; rec = tp / (tp + fn_) if tp + fn_ else 0.0
-        met.append(dict(detector=dname, AUPRC=round(float(average_precision_score(yt, pt)), 4),
+        met.append(dict(detector=dname,
+                        AUROC=round(_auroc(yt, pt), 4), AUPRC=round(_auprc(yt, pt), 4),
                         Recall_at_1pctFPR=round(rec, 4), Precision_at_op=round(prec, 4),
                         F1_at_op=round(2*prec*rec/(prec+rec) if prec+rec else 0.0, 4),
                         ECE_fixed=round(ece_fixed(yt, pt), 4)))

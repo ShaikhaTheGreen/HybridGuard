@@ -31,7 +31,7 @@ from typing import Callable, Dict, List, Sequence, Tuple
 
 import numpy as np
 
-from canonicalize import canonicalize, perturb            # base defense c + simple attacks
+from canonicalize import canonicalize, perturb, stable_seed   # base defense c + simple attacks
 from tr39_fold import fold_confusables                     # gated full-UTS#39 fold
 from confusables_table import CONFUSABLES_TR39             # for the tr39 attack operator
 
@@ -174,12 +174,10 @@ def family_operators(families: Sequence[str]) -> List[str]:
 # --------------------------------------------------------------------------
 
 def threshold_at_fpr(y, scores, fpr=0.01):
-    y = np.asarray(y); s = np.asarray(scores)
-    neg = np.sort(s[y == 0])
-    if neg.size == 0:
-        return 0.5
-    k = max(0, int(np.ceil((1 - fpr) * neg.size)) - 1)
-    return float(neg[min(k, neg.size - 1)])
+    # Single source of truth: stats.threshold_at_fpr (identical frozen 1%-FPR
+    # convention across every experiment).
+    from stats import threshold_at_fpr as _t
+    return _t(y, scores, fpr)
 
 
 def adaptive_search(fn: Callable[[Sequence[str]], np.ndarray],
@@ -194,7 +192,7 @@ def adaptive_search(fn: Callable[[Sequence[str]], np.ndarray],
     for r in range(restarts):
         for op in op_names:
             for sg in sigmas:
-                rng = random.Random((hash(op) ^ (r * 1000003) ^ int(sg * 997)) & 0xffffffff)
+                rng = random.Random(stable_seed(op, r, sg, seed))
                 Xa = [OPERATORS[op](t, rng, sg) for t in X_pos]
                 Xd = [canon_fn(t) for t in Xa]
                 rec = float((np.asarray(fn(Xd)) >= thr).mean())
@@ -204,11 +202,11 @@ def adaptive_search(fn: Callable[[Sequence[str]], np.ndarray],
 
 
 def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_adaptive_v2_out",
-        load_sota=True, max_pos=400, restarts=6):
+        load_sota=True, max_pos=400, restarts=6, seed=0, train_data=None):
     os.makedirs(out_dir, exist_ok=True)
-    if hg_detectors is None or load_sota:
+    if hg_detectors is None or load_sota or train_data is not None:
         from npl_diamond_experiment import build_detectors            # lazy (heavy deps)
-        det = build_detectors(hg_detectors, load_sota=load_sota)
+        det = build_detectors(hg_detectors, load_sota=load_sota, train_data=train_data, seed=seed)
     else:
         det = hg_detectors
     print("Detectors:", list(det))
@@ -227,7 +225,7 @@ def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_adaptive_v
             ops = FAMILIES[fam]
             cell = {}
             for defname, canon_fn in DEFENSES.items():
-                best = adaptive_search(fn, canon_fn, Xpos, thr, ops, restarts=restarts)
+                best = adaptive_search(fn, canon_fn, Xpos, thr, ops, restarts=restarts, seed=seed)
                 cell[defname] = best
             rows.append(dict(detector=dname, heldout_family=fam, clean=round(rec_clean, 4),
                              none=cell["none"]["recall"], c=cell["c"]["recall"],
@@ -237,6 +235,10 @@ def run(X_val, y_val, X_test, y_test, hg_detectors=None, out_dir="npl_adaptive_v
             print(f"  {dname:16s} held-out={fam:16s} clean={rec_clean:.2f} "
                   f"none={cell['none']['recall']:.2f} c={cell['c']['recall']:.2f} c+={cell['cplus']['recall']:.2f}")
 
+    # Export the leave-one-family-out partition for auditability: c+ is NEVER tuned on
+    # the held-out family; it generalizes because it folds the whole UTS#39 standard.
+    snap["_lofo_splits"] = {f: {"train": lofo_split(f)[0], "holdout": f} for f in FAMILIES}
+    snap["_seed"] = seed
     _write_csv(os.path.join(out_dir, "adaptive_v2_matrix.csv"), rows)
     json.dump(snap, open(os.path.join(out_dir, "numbers_snapshot_adaptive_v2.json"), "w"), indent=2)
     _tex(rows, os.path.join(out_dir, "adaptive_v2_matrix.tex"))

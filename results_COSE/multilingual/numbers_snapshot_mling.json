@@ -1,0 +1,76 @@
+{
+  "rows": [
+    {
+      "lang": "ar",
+      "detector": "regex",
+      "raw": 0.0333,
+      "canon": 0.0333
+    },
+    {
+      "lang": "ar",
+      "detector": "tfidf_svm",
+      "raw": 0.0333,
+      "canon": 0.0333
+    },
+    {
+      "lang": "ar",
+      "detector": "protectai/deberta",
+      "raw": 1.0,
+      "canon": 1.0
+    },
+    {
+      "lang": "ar",
+      "detector": "InjecGuard",
+      "raw": 0.0,
+      "canon": 0.0
+    },
+    {
+      "lang": "es",
+      "detector": "regex",
+      "raw": 0.05,
+      "canon": 0.05
+    },
+    {
+      "lang": "es",
+      "detector": "tfidf_svm",
+      "raw": 0.15,
+      "canon": 0.15
+    },
+    {
+      "lang": "es",
+      "detector": "protectai/deberta",
+      "raw": 1.0,
+      "canon": 0.95
+    },
+    {
+      "lang": "es",
+      "detector": "InjecGuard",
+      "raw": 0.6,
+      "canon": 0.65
+    },
+    {
+      "lang": "ar_roman_nat",
+      "detector": "regex",
+      "raw": 0.2667,
+      "canon": 0.2667
+    },
+    {
+      "lang": "ar_roman_nat",
+      "detector": "tfidf_svm",
+      "raw": 0.4,
+      "canon": 0.4
+    },
+    {
+      "lang": "ar_roman_nat",
+      "detector": "protectai/deberta",
+      "raw": 0.8,
+      "canon": 0.9333
+    },
+    {
+      "lang": "ar_roman_nat",
+      "detector": "InjecGuard",
+      "raw": 0.0,
+      "canon": 0.0
+    }
+  ]
+}

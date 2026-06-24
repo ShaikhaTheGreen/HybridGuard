@@ -1,0 +1,5 @@
+detector,benign_fpr_raw,benign_fpr_canon,delta
+regex,0.0,0.0,0.0
+tfidf_svm,0.2832,0.2832,0.0
+protectai/deberta,0.5074,0.5015,-0.0059
+InjecGuard,0.0619,0.0619,0.0
